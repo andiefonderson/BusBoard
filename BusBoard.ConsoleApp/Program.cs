@@ -10,6 +10,10 @@ namespace BusBoard.ConsoleApp
   {
     static void Main(string[] args)
     {
+            Console.WriteLine("Please enter the bus code");
+            string busCode = Console.ReadLine();
+            Console.WriteLine(busCode + " Good job.");
+            Console.ReadLine();
     }
   }
 }
