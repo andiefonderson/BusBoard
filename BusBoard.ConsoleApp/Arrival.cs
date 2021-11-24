@@ -4,25 +4,24 @@ using Newtonsoft.Json;
 
 namespace BusBoard.ConsoleApp
 {
-    class Arrival
+    class Arrival : IComparable
     {
-        //routes, destinations, and the time until they arrive in minutes.
-        public string lineName { get; set; }              //lineName
-        public string destinationName { get; set; }          //destinationName
-        public int timeToStation { get; set; }        //timeToStation (seconds?)
+        public string lineName { get; set; }
+        public string destinationName { get; set; }
+        public int timeToStation { get; set; }
 
-        //Depends on how class is initialised in main
-        //public Arrival(string lineName, string destinationName, int timeToStation)
-        //{
-        //    this.lineName = lineName;
-        //    this.destinationName = destinationName;
-        //    this.timeToStation = TimeSpan.FromSeconds(timeToStation);
-        //}
 
         public override string ToString()
         {
             TimeSpan timeSpan = TimeSpan.FromSeconds(timeToStation);
-            return $"This {lineName} bus is heading for {destinationName}. It will arrive in {timeSpan.TotalMinutes:0.00} minutes.";
+            return $"This {lineName} bus is heading for {destinationName}. It will arrive in {timeSpan.Minutes} minutes {timeSpan.Seconds} second.";
         }
+
+        public int CompareTo(object obj)
+        {
+            Arrival comparator = (Arrival) obj;
+            return timeToStation.CompareTo(comparator.timeToStation);
+        }
+
     }
 }
