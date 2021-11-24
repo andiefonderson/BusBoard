@@ -9,7 +9,6 @@ namespace BusBoard.ConsoleApp
     struct StopPoint
     {
         public string code { get; }
-        //Consider an array of size 5 as this is constant, no need to resize the list
         private List<Arrival> arrivals { get; }
 
         public StopPoint(string code, List<Arrival> arrivals)

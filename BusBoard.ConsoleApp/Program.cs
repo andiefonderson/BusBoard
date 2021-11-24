@@ -20,21 +20,5 @@ namespace BusBoard.ConsoleApp
             Console.WriteLine(stopPoint.ToString());
             Console.ReadLine();
         }
-
-        //static StopPoint GetApiData(List<Arrival> response, string busCode)
-        //{
-        //    List<Arrival> arrivals = new List<Arrival>();
-        //    int count = 0;
-        //    foreach (var item in response)
-        //    {
-        //        arrivals.Add(item);
-        //        if(count >= 5)
-        //        {
-        //            break;
-        //        }
-        //        else { count++; }                
-        //    }
-        //    return new StopPoint(busCode, arrivals);
-        //}
     }
 }

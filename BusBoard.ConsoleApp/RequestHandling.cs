@@ -16,18 +16,11 @@ namespace BusBoard.ConsoleApp
         public RequestHandling(string code)
         {
             client = new RestClient("https://api.tfl.gov.uk/");
-            
             //Get lon lat for this request
             //postcodeRequest = new RestRequest($"StopPoint?lat={lat}&lon={lon}&stopTypes={?NaptanBusWayPoint}&radius=10000&modes=bus", DataFormat.Json);
             //this.stopcode = postcode result
             this.stopcode = code;
             arrivalsRequest = new RestRequest($"StopPoint/{stopcode}/Arrivals?mode=bus", DataFormat.Json);
-        }
-
-        private string GetStopCode(string postcode)
-        {
-            //
-            return "";
         }
 
         public List<Arrival> GetArrivals()
@@ -48,9 +41,15 @@ namespace BusBoard.ConsoleApp
             return new StopPoint(stopcode, stoppointArrivals);
         }
 
-        public void ParsePostcode()
-        {
-            //Parse postcode, get lat and lon
-        }
+        //public void ParsePostcode()
+        //{
+        //    //Parse postcode, get lat and lon
+        //}
+
+        //private string GetStopCode(string postcode)
+        //{
+        //    //
+        //    return "";
+        //}
     }
 }
