@@ -7,28 +7,22 @@ namespace BusBoard.ConsoleApp
     class Arrival
     {
         //routes, destinations, and the time until they arrive in minutes.
-        private string route;               //lineName
-        private string destination;         //destinationName
-        private TimeSpan timeToArrive;      //timeToStation (seconds?)
+        public string lineName { get; set; }              //lineName
+        public string destinationName { get; set; }          //destinationName
+        public int timeToStation { get; set; }        //timeToStation (seconds?)
 
         //Depends on how class is initialised in main
-        public Arrival(string route, string destination, int timeToArrive)
-        {
-            this.route = route;
-            this.destination = destination;
-            this.timeToArrive = TimeSpan.FromSeconds(timeToArrive);
-        }
-
-        public Arrival(string route, string destination, TimeSpan timeToArrive)
-        {
-            this.route = route;
-            this.destination = destination;
-            this.timeToArrive = timeToArrive;
-        }
+        //public Arrival(string lineName, string destinationName, int timeToStation)
+        //{
+        //    this.lineName = lineName;
+        //    this.destinationName = destinationName;
+        //    this.timeToStation = TimeSpan.FromSeconds(timeToStation);
+        //}
 
         public override string ToString()
         {
-            return $"This {route} bus is heading for {destination}. It will arrive in {timeToArrive.TotalMinutes.ToString()}";
+            TimeSpan timeSpan = TimeSpan.FromSeconds(timeToStation);
+            return $"This {lineName} bus is heading for {destinationName}. It will arrive in {timeSpan.TotalMinutes:0.00} minutes.";
         }
     }
 }
