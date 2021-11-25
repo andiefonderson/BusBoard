@@ -8,8 +8,6 @@ namespace BusBoard.ConsoleApp
 {
     class Program
     {
-        //TODO: Check if this is still needed anywhere - 490008660N
-        //TODO: Create a function that loops until a valid postcode is given (use an API call to check it's valid), then return the valid postcode.
         //TODO: Add validation for distanceStr
         public const int NUMBER_OF_ARRIVALS = 5;
         public const int NUMBER_OF_STOPPOINTS = 2;

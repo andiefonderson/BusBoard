@@ -12,24 +12,49 @@ namespace BusBoard.ConsoleApp
         private RestRequest tflArrivalsRequest;
         private Location location;
 
+        private string lon;
+        private string lat;
+
         //TODO: Create RestRequest using the following string "StopPoint?lat=51.49454&lon=-0.100601&stopTypes=NaptanPublicBusCoachTram&radius=200&modes=bus"
         //TODO: turn postcode into stop code
         //TODO: Create an object to get the FIRST stoppoint from the JSON response from above (I think they're sorted by distance already?)
         //TODO: Add a postcodeClient, rename client to tlfClient. Rename current RestRequests to reflect this change in the program
         public RequestHandling()
         {
+            tflClient = new RestClient("https://api.tfl.gov.uk/");
+            postcodeClient = new RestClient("http://api.postcodes.io/");
             string postcode = GetValidPostcode();
             Location location = GetLocation(postcode);
             //Generate stopcode
-            tflClient = new RestClient("https://api.tfl.gov.uk/");
-            postcodeClient = new RestClient("http://api.postcodes.io/");
+            
             //Get lon lat for this request
             //postcodeRequest = new RestRequest($"StopPoint?lat={lat}&lon={lon}&stopTypes={?NaptanBusWayPoint}&radius=10000&modes=bus", DataFormat.Json);
             //tflArrivalsRequest = new RestRequest($"StopPoint/{stopcode}/Arrivals?mode=bus", DataFormat.Json);
         }
 
+        public string GetValidPostcode()
+        {
+            // NW5 1TL
+            string postcode;
+            bool valid;
+            RestRequest postcodeValidateRequest;
+            do
+            {
+                // Console.WriteLine("Enter a postcode: ");
+                // postcode = Console.ReadLine();
+                postcode = "NW5 1TL";
+                postcodeValidateRequest = new RestRequest($"postcodes/{postcode}/validate");
+                var postcodeResponse = postcodeClient.Get<List<Dictionary<string, string>>>(postcodeValidateRequest).Data;
+                valid = bool.Parse(postcodeResponse[0]["result"]);
+            } while (!valid);
+            return postcode;
+        }
+
         private Location GetLocation(string postcode)
         {
+            RestRequest postcodeLonLatRequest = new RestRequest($"postcodes/{postcode}");
+            var postcodeLocationResponse = postcodeClient.Get<PostcodeLocationResult>(postcodeLonLatRequest);
+
             throw new NotImplementedException();
         }
 
@@ -50,30 +75,6 @@ namespace BusBoard.ConsoleApp
             }
             return new StopPoint(stopcode, stoppointArrivals);
         }
-
-        public string GetValidPostcode()
-        {
-            string postcode;
-            bool valid;
-            RestRequest postcodeValidateRequest;
-            do
-            {
-                Console.WriteLine("Enter a postcode: ");
-                postcode = "RGR"; //= Console.ReadLine();
-                postcodeValidateRequest = new RestRequest($"postcodes/{postcode}/validate");
-                var postcodeResponse = postcodeClient.Get<List<Dictionary<string, string>>>(postcodeValidateRequest).Data;
-                valid = bool.Parse(postcodeResponse[0]["result"]);
-            } while (!valid);
-            return postcode;
-        }
-
-        public void GetStopCode(string postcode)
-        {
-            //API call to postcode client using 
-            //private RestRequest postcodeLocationRequest = something
-            //Return long and lat as some data structure
-        }
-
 
         //Create Request object - pass in postcode
         //Conver postcode to long and lat (as strings themselves) - these can be private properties
