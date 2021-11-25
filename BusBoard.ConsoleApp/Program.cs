@@ -14,6 +14,7 @@ namespace BusBoard.ConsoleApp
         static void Main(string[] args)
         {
             RequestHandling requestHandler = new RequestHandling();
+            requestHandler.GetStopPoints(5, 2);
             //Console.Write("Enter the distance to search in meters (defauly 200)");
             //string distanceStr = Console.ReadLine().Trim();
             //int distance = 200;
