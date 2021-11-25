@@ -8,8 +8,6 @@ namespace BusBoard.ConsoleApp
 {
     internal class StoppointWrapper
     {
-        public string type { get; set; }
-        public string[] centrePoint { get; set; }
-        public List<Dictionary<string, string>> stopPoints { get; set; }
+        public List<StopPointId> stopPoints { get; set; }
     }
 }

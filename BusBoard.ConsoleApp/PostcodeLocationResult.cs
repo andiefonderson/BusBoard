@@ -8,7 +8,6 @@ namespace BusBoard.ConsoleApp
 {
     internal class PostcodeLocationResult
     {
-        public int status { get; set; }
-        public Dictionary<string, string> result { get; set; }
+       public Dictionary<string, string> result { get; set; }
     }
 }
