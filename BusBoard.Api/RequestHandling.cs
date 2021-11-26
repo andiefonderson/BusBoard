@@ -10,6 +10,7 @@ namespace BusBoard.Api
 
         private string lon;
         private string lat;
+        private BusBoard.Web.Models.PostcodeSelection selection;
 
         public RequestHandling(string postcodeInput)
         {
@@ -17,6 +18,11 @@ namespace BusBoard.Api
             postcodeClient = new RestClient("http://api.postcodes.io/");
             string postCode = GetValidPostcode(postcodeInput);
             GetLocation(postCode);
+        }
+
+        public RequestHandling(BusBoard.Web.Models.PostcodeSelection selection)
+        {
+            this.selection = selection;
         }
 
         public string GetValidPostcode(string postcode)
