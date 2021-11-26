@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using RestSharp;
 
 namespace BusBoard.ConsoleApp
@@ -13,32 +12,24 @@ namespace BusBoard.ConsoleApp
         private string lon;
         private string lat;
 
-        //tflArrivalsRequest = new RestRequest($"StopPoint/{stopcode}/Arrivals?mode=bus", DataFormat.Json)
-        //TODO: Create RestRequest using the following string "StopPoint?lat=51.49454&lon=-0.100601&stopTypes=NaptanPublicBusCoachTram&radius=200&modes=bus"
-        //TODO: turn postcode into stop code
-        //TODO: Create an object to get the FIRST stoppoint from the JSON response from above (I think they're sorted by distance already?)
-        //TODO: Add a postcodeClient, rename client to tlfClient. Rename current RestRequests to reflect this change in the program
         public RequestHandling()
         {
             tflClient = new RestClient("https://api.tfl.gov.uk/");
             postcodeClient = new RestClient("http://api.postcodes.io/");
             string postcode = GetValidPostcode();
             GetLocation(postcode);
-            //Generate stopcode
         }
 
-        //TODO: Take user input here after debugging
         public string GetValidPostcode()
         {
-            // NW5 1TL
+            // Test postcode: NW5 1TL
             string postcode;
             bool valid;
             RestRequest postcodeValidateRequest;
             do
             {
-                // Console.WriteLine("Enter a postcode: ");
-                // postcode = Console.ReadLine();
-                postcode = "NW5 1TL";
+                Console.WriteLine("Enter a postcode: ");
+                postcode = Console.ReadLine();
                 postcodeValidateRequest = new RestRequest($"postcodes/{postcode}/validate");
                 var postcodeResponse = postcodeClient.Get<List<Dictionary<string, string>>>(postcodeValidateRequest).Data;
                 valid = bool.Parse(postcodeResponse[0]["result"]);
@@ -54,7 +45,21 @@ namespace BusBoard.ConsoleApp
             lat = postcodeLocationResponse.result["latitude"];
         }
 
-        public List<Arrival> GetArrivals(string stopcode)
+        public List<StopPoint> GetStopPoints(int numberOfArrivals, int numberOfStoppoints)
+        {
+            List<StopPoint> stoppoints = new List<StopPoint>();
+            RestRequest tflStoppointsRequest = new RestRequest($"StopPoint?lat={lat}&lon={lon}&stopTypes=NaptanPublicBusCoachTram&radius=200&modes=bus");
+            var response = tflClient.Get<StoppointWrapper>(tflStoppointsRequest).Data;
+            for (int i = 0; i < numberOfStoppoints; i++)
+            {
+                string stopCode = response.stopPoints[i].naptanId.ToString();
+                string stopName = response.stopPoints[i].commonName.ToString();
+                stoppoints.Add(GetStopPoint(5, stopName, stopCode));
+            }
+            return stoppoints;
+        }
+
+        private List<Arrival> GetArrivals(string stopcode)
         {
             RestRequest tflArrivalsRequest = new RestRequest($"StopPoint/{stopcode}/Arrivals?mode=bus", DataFormat.Json);
             List<Arrival> arrivals = tflClient.Get<List<Arrival>>(tflArrivalsRequest).Data;
@@ -62,7 +67,7 @@ namespace BusBoard.ConsoleApp
             return arrivals;
         }
 
-        private StopPoint GetStopPoint(int numberOfArrivals, string stopcode)
+        private StopPoint GetStopPoint(int numberOfArrivals, string stopName, string stopcode)
         {
             List<Arrival> allArrivals = GetArrivals(stopcode);
             List<Arrival> stoppointArrivals = new List<Arrival>();
@@ -70,30 +75,7 @@ namespace BusBoard.ConsoleApp
             {
                 stoppointArrivals.Add(allArrivals[i]);
             }
-            return new StopPoint(stopcode, stoppointArrivals);
+            return new StopPoint(stopcode, stopName, stoppointArrivals);
         }
-
-        public List<StopPoint> GetStopPoints(int numberOfArrivals, int numberOfStoppoints)
-        {
-            //at=51.49454&lon=-0.100601
-            List<StopPoint> stoppoints = new List<StopPoint>();
-            RestRequest tflStoppointsRequest = new RestRequest($"StopPoint?lat={lat}&lon={lon}&stopTypes=NaptanPublicBusCoachTram&radius=200&modes=bus");
-            var response = tflClient.Get<StoppointWrapper>(tflStoppointsRequest);
-            //Get stoppoints from API
-            //Use num of them to full the above list
-            for (int i = 0;i < numberOfStoppoints; i++)
-            {
-
-            }
-
-
-            return stoppoints;
-        }
-
-        //RequestHandler.GetStopPoints is called. Pass in number of stoppoints AND number of arrivals for each stoppoint AND postcode
-        //API call to TFL to get codes for nearest numOfStoppoints stopcodes.
-        //ForEach this calls private method GetStopPoint, which takes number of arrivals and the stopcode
-        //The private method makes the API request to tfl to get arrivals
-        //returns List<stoppoint>
     }
 }
