@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BusBoard.ConsoleApp
+namespace BusBoard.Web
 {
     class Arrival : IComparable
     {

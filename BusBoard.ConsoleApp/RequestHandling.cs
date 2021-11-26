@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using RestSharp;
 
-namespace BusBoard.ConsoleApp
+namespace BusBoard.Web
 {
     class RequestHandling
     {
@@ -12,24 +12,20 @@ namespace BusBoard.ConsoleApp
         private string lon;
         private string lat;
 
-        public RequestHandling()
+        public RequestHandling(string postcodeInput)
         {
             tflClient = new RestClient("https://api.tfl.gov.uk/");
             postcodeClient = new RestClient("http://api.postcodes.io/");
-            string postcode = GetValidPostcode();
-            GetLocation(postcode);
+            string postCode = GetValidPostcode(postcodeInput);
+            GetLocation(postCode);
         }
 
-        public string GetValidPostcode()
+        public string GetValidPostcode(string postcode)
         {
-            // Test postcode: NW5 1TL
-            string postcode;
             bool valid;
             RestRequest postcodeValidateRequest;
             do
-            {
-                Console.WriteLine("Enter a postcode: ");
-                postcode = Console.ReadLine();
+            {                
                 postcodeValidateRequest = new RestRequest($"postcodes/{postcode}/validate");
                 var postcodeResponse = postcodeClient.Get<List<Dictionary<string, string>>>(postcodeValidateRequest).Data;
                 valid = bool.Parse(postcodeResponse[0]["result"]);
