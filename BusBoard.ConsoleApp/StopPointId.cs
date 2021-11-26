@@ -1,4 +1,4 @@
-﻿namespace BusBoard.Web
+﻿namespace BusBoard.Api
 {
 	internal class StopPointId
 	{

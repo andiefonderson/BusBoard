@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using RestSharp;
 
-namespace BusBoard.Web
+namespace BusBoard.Api
 {
     class RequestHandling
     {

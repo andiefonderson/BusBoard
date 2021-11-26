@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 
-namespace BusBoard.Web
+namespace BusBoard.Api
 {
     struct StopPoint
     {
