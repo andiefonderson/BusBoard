@@ -7,4 +7,12 @@
 
 <div class="row">
     <p>You entered postcode @Model.PostCode</p>
+    @foreach (var item in Model.BusStopsInfo)
+    {
+        foreach (var line in item)
+        {
+            <p>@line</p>
+            <br />
+        }
+    }
 </div>

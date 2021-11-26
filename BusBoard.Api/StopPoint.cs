@@ -16,6 +16,18 @@ namespace BusBoard.Api
             this.arrivals = arrivals;
         }
 
+        public List<string> GetInfo()
+        {
+            List<string> info = new List<string>();
+            info.Add($"Bus Stop: {busStopName}");
+            foreach (Arrival arrival in arrivals)
+            {
+                info.Add(arrival.ToString());
+            }
+
+            return info;
+        }
+
         public override string ToString()
         {
             StringBuilder stringBuilder = new StringBuilder();
