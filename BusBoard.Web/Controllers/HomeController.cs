@@ -39,15 +39,23 @@ namespace BusBoard.Web.Controllers
         public List<List<string>> APICall(string selection)
         {
             RequestHandling requestHandler = new RequestHandling(selection.ToString());
-            List<StopPoint> stopPointsList = requestHandler.GetStopPoints(5, 2);
-            List<List<string>> busArrivalsList = new List<List<string>>();
-            
-            foreach (StopPoint stopPoint in stopPointsList)
-            {
-                busArrivalsList.Add(stopPoint.GetInfo());
-            }
 
-            return busArrivalsList;
+            if (requestHandler.GetValidPostcode(selection))
+            {
+                List<StopPoint> stopPointsList = requestHandler.GetStopPoints(5, 2);
+                List<List<string>> busArrivalsList = new List<List<string>>();
+
+                foreach (StopPoint stopPoint in stopPointsList)
+                {
+                    busArrivalsList.Add(stopPoint.GetInfo());
+                }
+
+                return busArrivalsList;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

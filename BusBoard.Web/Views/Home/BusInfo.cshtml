@@ -6,16 +6,23 @@
 <h2>BusInfo</h2>
 
 <div class="col px-md-5">
-    <h4>You entered postcode: @Model.PostCode</h4>
-    @foreach (var item in Model.BusStopsInfo)
+    @if (Model.BusStopsInfo == null)
     {
-        <ul class="list-group">
-            <li class="list-group-item active"><b>@item[0]</b></li>
-            @foreach (var line in item.GetRange(1,item.Count - 1))
-            {
-            <li class="list-group-item list-group-item-secondary">@line</li>
-            }
-        </ul>
-
+        <p>You've entered an invalid postcode. Please go back to the <a href="/">homepage</a> and try again.</p>
     }
+    else
+    {
+        <h4>You entered postcode: @Model.PostCode</h4>
+        foreach (var item in Model.BusStopsInfo)
+        {
+            <ul class="list-group">
+                <li class="list-group-item active"><b>@item[0]</b></li>
+                @foreach (var line in item.GetRange(1, item.Count - 1))
+                {
+                    <li class="list-group-item list-group-item-secondary">@line</li>
+                }
+            </ul>
+        }
+    }
+
 </div>

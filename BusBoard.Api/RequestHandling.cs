@@ -23,8 +23,7 @@ namespace BusBoard.Api
         }
 
         public bool GetValidPostcode(string postcode)
-        {
-            
+        {            
             RestRequest postcodeValidateRequest;
             postcodeValidateRequest = new RestRequest($"postcodes/{postcode}/validate");
             var postcodeResponse = postcodeClient.Get<List<Dictionary<string, string>>>(postcodeValidateRequest).Data;
@@ -65,7 +64,7 @@ namespace BusBoard.Api
         {
             List<Arrival> allArrivals = GetArrivals(stopcode);
             List<Arrival> stoppointArrivals = new List<Arrival>();
-            for (int i = 0; i < numberOfArrivals; i++)
+            for (int i = 0; i < numberOfArrivals && i < allArrivals.Count; i++)
             {
                 stoppointArrivals.Add(allArrivals[i]);
             }
